@@ -1,70 +1,86 @@
-# Getting Started with Create React App
 
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+# API Cart Frontend
 
-## Available Scripts
+Este es el frontend de una aplicación para gestionar un carrito de compras, interactuando con una API en Rails. El proyecto está desarrollado con **React**.
 
-In the project directory, you can run:
+## Requisitos
 
-### `npm start`
+- **Node.js**: Se recomienda usar la versión LTS.
+- **npm o yarn**: Para gestionar las dependencias.
 
-Runs the app in the development mode.\
-Open [http://localhost:3000](http://localhost:3000) to view it in your browser.
+## Instalación
 
-The page will reload when you make changes.\
-You may also see any lint errors in the console.
+Sigue los siguientes pasos para poner en marcha el frontend de la aplicación.
 
-### `npm test`
+### 1. Clonar el repositorio
 
-Launches the test runner in the interactive watch mode.\
-See the section about [running tests](https://facebook.github.io/create-react-app/docs/running-tests) for more information.
+```bash
+git clone https://github.com/Stivenson02/ApiCartFrontend.git
+```
 
-### `npm run build`
+### 2. Instalar dependencias
 
-Builds the app for production to the `build` folder.\
-It correctly bundles React in production mode and optimizes the build for the best performance.
+Dentro de la carpeta del proyecto, instala las dependencias necesarias:
 
-The build is minified and the filenames include the hashes.\
-Your app is ready to be deployed!
+```bash
+npm install
+```
 
-See the section about [deployment](https://facebook.github.io/create-react-app/docs/deployment) for more information.
+o si prefieres usar **yarn**:
 
-### `npm run eject`
+```bash
+yarn install
+```
 
-**Note: this is a one-way operation. Once you `eject`, you can't go back!**
+### 3. Configurar el backend
 
-If you aren't satisfied with the build tool and configuration choices, you can `eject` at any time. This command will remove the single build dependency from your project.
+Asegúrate de que el backend (API) esté corriendo en tu máquina local o en un servidor accesible.
 
-Instead, it will copy all the configuration files and the transitive dependencies (webpack, Babel, ESLint, etc) right into your project so you have full control over them. All of the commands except `eject` will still work, but they will point to the copied scripts so you can tweak them. At this point you're on your own.
+El frontend realiza peticiones a la API en:
 
-You don't have to ever use `eject`. The curated feature set is suitable for small and middle deployments, and you shouldn't feel obligated to use this feature. However we understand that this tool wouldn't be useful if you couldn't customize it when you are ready for it.
+```bash
+http://localhost:3000
+```
 
-## Learn More
+### 4. Correr la aplicación
 
-You can learn more in the [Create React App documentation](https://facebook.github.io/create-react-app/docs/getting-started).
+Para correr la aplicación, usa el siguiente comando:
 
-To learn React, check out the [React documentation](https://reactjs.org/).
+```bash
+npm start
+```
 
-### Code Splitting
+o si usas **yarn**:
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/code-splitting](https://facebook.github.io/create-react-app/docs/code-splitting)
+```bash
+yarn start
+```
 
-### Analyzing the Bundle Size
+Esto iniciará el servidor de desarrollo en `http://localhost:3001`.
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size](https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size)
+## Funcionalidades
 
-### Making a Progressive Web App
+- **Visualización de productos**: Muestra los productos disponibles en el carrito.
+- **Edición del carrito**: Permite agregar o eliminar productos del carrito.
+- **Actualización del carrito**: Se actualiza en tiempo real cuando se agregan o eliminan productos.
+- **Manejo de estado**: Se utiliza `React` y `useState` para manejar el estado del carrito y los productos.
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app](https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app)
+## Dependencias
 
-### Advanced Configuration
+Este proyecto utiliza las siguientes dependencias:
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/advanced-configuration](https://facebook.github.io/create-react-app/docs/advanced-configuration)
+- `react`
+- `axios` para hacer las solicitudes HTTP.
+- `react-router-dom` para la navegación.
 
-### Deployment
+## Contribuciones
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/deployment](https://facebook.github.io/create-react-app/docs/deployment)
+Si deseas contribuir al proyecto, haz un fork del repositorio y realiza los cambios en tu propia rama. Luego, envía un pull request.
 
-### `npm run build` fails to minify
+## Licencia
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify](https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify)
+Este proyecto está bajo la Licencia MIT. Ver el archivo LICENSE para más detalles.
+
+---
+
+Gracias por revisar el proyecto.
