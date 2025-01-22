@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
+import { Link } from 'react-router-dom';
 
 const ShowCarts = () => {
   const [carts, setCarts] = useState([]);
@@ -35,6 +36,7 @@ const ShowCarts = () => {
                 </li>
               ))}
             </ul>
+            <Link to={`/cart_edit/${cart.id}`}><button>Editar carrito</button></Link> {/* Botón para editar */}
           </div>
         ))
       ) : (
