@@ -1,14 +1,14 @@
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
-import { useParams, useNavigate } from 'react-router-dom';
+import { useParams, Link, useNavigate } from 'react-router-dom';
 
 const CartEdit = () => {
-  const { id } = useParams(); // Obtener el ID del carrito desde la URL
+  const { id } = useParams(); 
+  const navigate = useNavigate();
   const [cart, setCart] = useState(null);
   const [products, setProducts] = useState([]);
-  const navigate = useNavigate(); // Para redirigir a la página de show_carts
 
-  // Cargar el carrito a editar
+
   useEffect(() => {
     const fetchCart = async () => {
       try {
@@ -19,8 +19,6 @@ const CartEdit = () => {
       }
     };
 
-    fetchCart();  // Llamar para cargar el carrito
-
     const fetchProducts = async () => {
       try {
         const response = await axios.get('http://localhost:3000/products');
@@ -30,30 +28,29 @@ const CartEdit = () => {
       }
     };
 
-    fetchProducts();  // Llamar para cargar los productos
+    fetchCart();
+    fetchProducts();
   }, [id]);
 
-  // Función para agregar productos al carrito
+
   const addProductToCart = (product) => {
-    const existingProduct = cart.cart_items.find((item) => item.product_id === product.id); // Verificar si el producto ya está en el carrito
+    const existingProduct = cart.cart_items.find((item) => item.product_id === product.id);
 
     if (existingProduct) {
-      // Si el producto ya está en el carrito, solo actualizamos la cantidad
       const updatedCart = {
         ...cart,
         cart_items: cart.cart_items.map((item) =>
           item.product_id === product.id
-            ? { ...item, quantity: item.quantity + 1 } // Aumentamos la cantidad
+            ? { ...item, quantity: item.quantity + 1 }
             : item
         ),
       };
       setCart(updatedCart);
     } else {
-      // Si el producto no está en el carrito, lo agregamos con cantidad 1
       const newCartItem = {
         product_id: product.id,
         quantity: 1,
-        product: product,  // Agregar el objeto completo del producto
+        product,
       };
       setCart({
         ...cart,
@@ -62,10 +59,33 @@ const CartEdit = () => {
     }
   };
 
-  // Función para actualizar el carrito en el backend
+
+  const removeProductFromCart = async (productId) => {
+    try {
+      const response = await axios.delete(`http://localhost:3000/carts/${id}`, {
+        data: { product_id: productId },
+      });
+
+      if (response.data.message) {
+        alert(response.data.message);
+        setCart(null);
+        navigate('/show_carts'); 
+      } else if (response.data.cart_items) {
+        setCart((prevCart) => ({
+          ...prevCart,
+          ...response.data,
+        }));
+      } else {
+        console.error('Respuesta del servidor no válida');
+      }
+    } catch (error) {
+      console.error('Error al eliminar el producto del carrito:', error);
+    }
+  };
+
   const updateCart = async () => {
     try {
-      const cartItems = cart.cart_items.map(item => ({
+      const cartItems = cart.cart_items.map((item) => ({
         product_id: item.product_id,
         quantity: item.quantity,
       }));
@@ -73,15 +93,10 @@ const CartEdit = () => {
       const response = await axios.put(`http://localhost:3000/carts/${id}`, {
         product_items: cartItems,
       });
-      
-      // Verificar que la respuesta tenga la propiedad cart_items
-      if (response.data && response.data.cart_items) {
-        console.log('Carrito actualizado:', response.data);
-        setCart(response.data); // Actualiza el estado con la respuesta del backend
-        navigate('/show_carts'); // Redirigir a la página show_carts
-      } else {
-        console.error('Respuesta del servidor no válida');
-      }
+
+      console.log('Carrito actualizado:', response.data);
+      setCart(response.data);
+      navigate('/show_carts');
     } catch (error) {
       console.error('Error al actualizar el carrito:', error);
     }
@@ -94,17 +109,17 @@ const CartEdit = () => {
         <div>
           <h3>Carrito ID: {cart.id}</h3>
           <p>Total: ${cart.total}</p>
-          <p>Cantidad de productos: {cart.quantity_products}</p>
+          <p>Cantidad de productos: {cart.cart_items.reduce((sum, item) => sum + item.quantity, 0)}</p>
           <h4>Productos en el carrito:</h4>
           <ul>
-            {cart.cart_items.map((item, index) => (
-              <li key={index}>
+            {cart.cart_items.map((item) => (
+              <li key={item.product_id}>
                 <strong>{item.product.name}</strong> - ${item.product.price} - Cantidad: {item.quantity}
+                <button onClick={() => removeProductFromCart(item.product_id)}>Eliminar</button>
               </li>
             ))}
           </ul>
 
-          {/* Botón para actualizar el carrito */}
           <button onClick={updateCart}>Actualizar Carrito</button>
 
           <h4>Agregar productos al carrito</h4>
@@ -117,6 +132,7 @@ const CartEdit = () => {
             ))}
           </ul>
 
+          <Link to="/show_carts">Volver a la lista de carritos</Link>
         </div>
       ) : (
         <p>Cargando carrito...</p>

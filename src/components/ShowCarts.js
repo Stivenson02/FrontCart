@@ -5,18 +5,17 @@ import { Link } from 'react-router-dom';
 const ShowCarts = () => {
   const [carts, setCarts] = useState([]);
 
-  // Cargar los carritos desde la API
   useEffect(() => {
     const fetchCarts = async () => {
       try {
         const response = await axios.get('http://localhost:3000/carts');
-        setCarts(response.data);  // Establecer los carritos en el estado
+        setCarts(response.data); 
       } catch (error) {
         console.error('Error al obtener los carritos:', error);
       }
     };
 
-    fetchCarts();  // Llamar a la función para cargar los carritos
+    fetchCarts();
   }, []);
 
   return (

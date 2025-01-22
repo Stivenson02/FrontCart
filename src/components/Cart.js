@@ -13,7 +13,7 @@ const Cart = ({ cart, setCart }) => {
     try {
       const response = await axios.post('http://localhost:3000/carts', { product_items: cart });
       console.log('Carrito confirmado:', response.data);
-      setCart([]);  // Limpiar el carrito después de confirmarlo
+      setCart([]);
     } catch (error) {
       console.error('Error al confirmar el carrito:', error);
     }
@@ -31,10 +31,10 @@ const Cart = ({ cart, setCart }) => {
           </li>
         ))}
       </ul>
-      {cart.length > 0 && !isCartEditPage && (  // Solo mostrar "Confirmar carrito" si no estamos en la vista de edición
+      {cart.length > 0 && !isCartEditPage && (  
         <button onClick={confirmCart}>Confirmar carrito</button>
       )}
-      {cart.length === 0 && !isCartEditPage && (  // Solo mostrar el mensaje "El carrito está vacío" si no estamos en la vista de edición
+      {cart.length === 0 && !isCartEditPage && ( 
         <p>El carrito está vacío.</p>
       )}
     </div>
