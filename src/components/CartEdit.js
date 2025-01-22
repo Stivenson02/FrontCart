@@ -1,11 +1,12 @@
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
-import { useParams, Link } from 'react-router-dom';
+import { useParams, useNavigate } from 'react-router-dom';
 
 const CartEdit = () => {
   const { id } = useParams(); // Obtener el ID del carrito desde la URL
   const [cart, setCart] = useState(null);
   const [products, setProducts] = useState([]);
+  const navigate = useNavigate(); // Para redirigir a la página de show_carts
 
   // Cargar el carrito a editar
   useEffect(() => {
@@ -52,12 +53,37 @@ const CartEdit = () => {
       const newCartItem = {
         product_id: product.id,
         quantity: 1,
-        product,
+        product: product,  // Agregar el objeto completo del producto
       };
       setCart({
         ...cart,
         cart_items: [...cart.cart_items, newCartItem],
       });
+    }
+  };
+
+  // Función para actualizar el carrito en el backend
+  const updateCart = async () => {
+    try {
+      const cartItems = cart.cart_items.map(item => ({
+        product_id: item.product_id,
+        quantity: item.quantity,
+      }));
+
+      const response = await axios.put(`http://localhost:3000/carts/${id}`, {
+        product_items: cartItems,
+      });
+      
+      // Verificar que la respuesta tenga la propiedad cart_items
+      if (response.data && response.data.cart_items) {
+        console.log('Carrito actualizado:', response.data);
+        setCart(response.data); // Actualiza el estado con la respuesta del backend
+        navigate('/show_carts'); // Redirigir a la página show_carts
+      } else {
+        console.error('Respuesta del servidor no válida');
+      }
+    } catch (error) {
+      console.error('Error al actualizar el carrito:', error);
     }
   };
 
@@ -78,6 +104,9 @@ const CartEdit = () => {
             ))}
           </ul>
 
+          {/* Botón para actualizar el carrito */}
+          <button onClick={updateCart}>Actualizar Carrito</button>
+
           <h4>Agregar productos al carrito</h4>
           <ul>
             {products.map((product) => (
@@ -88,7 +117,6 @@ const CartEdit = () => {
             ))}
           </ul>
 
-          
         </div>
       ) : (
         <p>Cargando carrito...</p>
